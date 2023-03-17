@@ -24,6 +24,17 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  bool player1turn = true;
+
+  /// When tapped, if the cell is empty and it is player1's turn, put an X, if it
+  /// is player2's turn put an O. If the cell is not empty, do nothing.
+  void _onTap() {
+    //
+  }
+
+  // X's and O's
+  List<String> values = List.filled(9, '');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +49,7 @@ class _HomeState extends State<Home> {
             ),
             child: Center(
               child: Text(
-                "X",
+                values[index],
                 style: TextStyle(fontSize: 50),
               ),
             ),
