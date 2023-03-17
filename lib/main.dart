@@ -27,7 +27,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  /// True if it is player1's turn, false if it is player2's turn.
+  /// Truxe if it is player1's turn, false if it is player2's turn.
   bool player1turn = true;
 
   /// X's and O's are stored in this list.
@@ -54,6 +54,37 @@ class _HomeState extends State<Home> {
           return AlertDialog(
             title:
                 Text("Game over ${player1turn ? 'player1' : 'player2'} won!"),
+            actions: [
+              // Play again button
+              TextButton(
+                onPressed: () {
+                  // Reset the values
+                  values = List.filled(9, '');
+
+                  // Remove the dialog
+                  Navigator.pop(context);
+
+                  player1turn = true;
+
+                  // Refresh screen with no X's or O's
+                  setState(() {});
+                },
+                child: const Text('Play again'),
+              ),
+            ],
+          );
+        },
+      );
+    } else if (isDraw(values)) {
+      print("Game over, it's a draw");
+
+      // Show game over dialog, with the option to restart the game
+      await showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text("Game over, it's a draw!"),
             actions: [
               // Play again button
               TextButton(
