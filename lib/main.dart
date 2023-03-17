@@ -5,6 +5,8 @@ void main() {
 }
 
 /// A tic-tac-toe game.
+///
+/// This is the main app widget.
 class TicTacToeApp extends StatelessWidget {
   const TicTacToeApp({super.key});
 
@@ -16,6 +18,7 @@ class TicTacToeApp extends StatelessWidget {
   }
 }
 
+/// The main screen of the app.
 class Home extends StatefulWidget {
   const Home({super.key});
 
@@ -24,9 +27,10 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  /// True if it is player1's turn, false if it is player2's turn.
   bool player1turn = true;
 
-  /// X's and O's
+  /// X's and O's are stored in this list.
   List<String> values = List.filled(9, '');
 
   /// When tapped, if the cell is empty and it is player1's turn, put an X, if it
@@ -89,10 +93,12 @@ class _HomeState extends State<Home> {
       ),
       body: Padding(
         padding: const EdgeInsets.only(top: 40),
+        // A grid view with 9 cells (3x3)
         child: GridView.builder(
           itemCount: 9,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 3),
+            crossAxisCount: 3,
+          ),
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () => _onTap(index),
@@ -115,26 +121,29 @@ class _HomeState extends State<Home> {
   }
 }
 
-///
+/// Returns true if there are no empty cells left and there is no winner.
+bool isDraw(List<String> values) {
+  // If there is a winner, it is not a draw
+  if (didWin(values)) return false;
+
+  // If there is an empty cell, it is not a draw
+  if (values.any((cell) => cell.isEmpty)) return false;
+
+  // If there is no empty cell and no winner, it is a draw
+  return true;
+}
+
+/// Returns true if the current board state has a winner.
 bool didWin(List<String> values) {
-  // horizontal: any combination of these has all Os or all Xs
-  // 0,1,2
-  // 3,4,5
-  // 6,7,8
-
-  // vertical
-  // 0,3,6
-  // 1,4,7
-  // 2,5,8
-
-  // diagonal
-  // 0,4,8
-  // 2,4,6
-
   return _horizontal(values) || _vertical(values) || _diagonal(values);
 }
 
 /// Returns true if any horizontal line has all X's or all O's
+///
+/// horizontal: any combination of these has all Os or all Xs
+/// 0,1,2
+/// 3,4,5
+/// 6,7,8
 bool _horizontal(List<String> values) {
   // 0,1,2
   if (values[0].isNotEmpty &&
@@ -159,7 +168,12 @@ bool _horizontal(List<String> values) {
   }
 }
 
-/// Returns true if any horizontal line has all X's or all O's
+/// Returns true if any vertical line has all X's or all O's
+///
+/// vertical winning combinations:
+/// 0,3,6
+/// 1,4,7
+/// 2,5,8
 bool _vertical(List<String> values) {
   // 0,3,6
   if (values[0].isNotEmpty &&
@@ -183,7 +197,11 @@ bool _vertical(List<String> values) {
   }
 }
 
-/// Returns true if any horizontal line has all X's or all O's
+/// Returns true if any diagonal line has all X's or all O's
+///
+/// diagonal winning combinations:
+/// 0,4,8
+/// 2,4,6
 bool _diagonal(List<String> values) {
   // 0,4,8
   if (values[0].isNotEmpty &&
