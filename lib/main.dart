@@ -32,12 +32,18 @@ class _HomeState extends State<Home> {
   /// When tapped, if the cell is empty and it is player1's turn, put an X, if it
   /// is player2's turn put an O. If the cell is not empty, do nothing.
   void _onTap(int index) {
-    //
-    print("tapped $index");
-
     if (values[index].isEmpty) {
+      // Insert an X or O
       values[index] = player1turn ? 'X' : 'O';
+
+      // Check if the game is over
+      if (didWin(values)) {
+        print("Game over ${player1turn ? 'player1' : 'player2'} won");
+      }
+
+      // Change player turn
       player1turn = !player1turn;
+
       setState(() {});
     }
   }
