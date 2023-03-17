@@ -69,3 +69,89 @@ class _HomeState extends State<Home> {
     );
   }
 }
+
+///
+bool didWin(List<String> values) {
+  // horizontal: any combination of these has all Os or all Xs
+  // 0,1,2
+  // 3,4,5
+  // 6,7,8
+
+  // vertical
+  // 0,3,6
+  // 1,4,7
+  // 2,5,8
+
+  // diagonal
+  // 0,4,8
+  // 2,4,6
+
+  return _horizontal(values) || _vertical(values) || _diagonal(values);
+}
+
+/// Returns true if any horizontal line has all X's or all O's
+bool _horizontal(List<String> values) {
+  // 0,1,2
+  if (values[0].isNotEmpty &&
+      values[0] == values[1] &&
+      values[1] == values[2]) {
+    return true;
+  }
+
+  // 3,4,5
+  else if (values[3].isNotEmpty &&
+      values[3] == values[4] &&
+      values[4] == values[5]) {
+    return true;
+  }
+  // 6,7,8
+  else if (values[6].isNotEmpty &&
+      values[6] == values[7] &&
+      values[7] == values[8]) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+/// Returns true if any horizontal line has all X's or all O's
+bool _vertical(List<String> values) {
+  // 0,3,6
+  if (values[0].isNotEmpty &&
+      values[0] == values[3] &&
+      values[3] == values[6]) {
+    return true;
+  }
+  // 1,4,7
+  else if (values[1].isNotEmpty &&
+      values[1] == values[4] &&
+      values[4] == values[7]) {
+    return true;
+  }
+  // 2,5,8
+  else if (values[2].isNotEmpty &&
+      values[2] == values[5] &&
+      values[5] == values[8]) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+/// Returns true if any horizontal line has all X's or all O's
+bool _diagonal(List<String> values) {
+  // 0,4,8
+  if (values[0].isNotEmpty &&
+      values[0] == values[4] &&
+      values[4] == values[8]) {
+    return true;
+  }
+  // 2,4,6
+  else if (values[2].isNotEmpty &&
+      values[2] == values[4] &&
+      values[4] == values[6]) {
+    return true;
+  } else {
+    return false;
+  }
+}
