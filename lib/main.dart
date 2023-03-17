@@ -32,11 +32,11 @@ class _HomeState extends State<Home> {
   /// When tapped, if the cell is empty and it is player1's turn, put an X, if it
   /// is player2's turn put an O. If the cell is not empty, do nothing.
   void _onTap(int index) async {
+    if (values[index].isNotEmpty) return; // do nothing
+
     // Paint X or O
-    if (values[index].isEmpty) {
-      values[index] = player1turn ? 'X' : 'O';
-      setState(() {});
-    }
+    values[index] = player1turn ? 'X' : 'O';
+    setState(() {});
 
     // Check if the game is over
     if (didWin(values)) {
@@ -48,6 +48,8 @@ class _HomeState extends State<Home> {
         context: context,
         builder: (context) {
           return AlertDialog(
+            title:
+                Text("Game over ${player1turn ? 'player1' : 'player2'} won!"),
             actions: [
               // Play again button
               TextButton(
@@ -57,6 +59,8 @@ class _HomeState extends State<Home> {
 
                   // Remove the dialog
                   Navigator.pop(context);
+
+                  player1turn = true;
 
                   // Refresh screen with no X's or O's
                   setState(() {});
@@ -79,26 +83,33 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GridView.builder(
-        itemCount: 9,
-        gridDelegate:
-            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-        itemBuilder: (context, index) {
-          return GestureDetector(
-            onTap: () => _onTap(index),
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(),
-              ),
-              child: Center(
-                child: Text(
-                  values[index],
-                  style: const TextStyle(fontSize: 50),
+      appBar: AppBar(
+        title: const Text('Tic Tac Toe Game!'),
+        backgroundColor: Colors.purple,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 40),
+        child: GridView.builder(
+          itemCount: 9,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3),
+          itemBuilder: (context, index) {
+            return GestureDetector(
+              onTap: () => _onTap(index),
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(),
+                ),
+                child: Center(
+                  child: Text(
+                    values[index],
+                    style: const TextStyle(fontSize: 50),
+                  ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
