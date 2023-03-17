@@ -32,7 +32,17 @@ class _HomeState extends State<Home> {
         gridDelegate:
             const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
         itemBuilder: (context, index) {
-          return Container();
+          return Container(
+            decoration: BoxDecoration(
+              border: Border.all(),
+            ),
+            child: Center(
+              child: Text(
+                "X",
+                style: TextStyle(fontSize: 50),
+              ),
+            ),
+          );
         },
       ),
     );
