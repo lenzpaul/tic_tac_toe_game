@@ -31,20 +31,48 @@ class _HomeState extends State<Home> {
 
   /// When tapped, if the cell is empty and it is player1's turn, put an X, if it
   /// is player2's turn put an O. If the cell is not empty, do nothing.
-  void _onTap(int index) {
+  void _onTap(int index) async {
+    // Paint X or O
     if (values[index].isEmpty) {
-      // Insert an X or O
       values[index] = player1turn ? 'X' : 'O';
-
-      // Check if the game is over
-      if (didWin(values)) {
-        print("Game over ${player1turn ? 'player1' : 'player2'} won");
-      }
-
-      // Change player turn
-      player1turn = !player1turn;
-
       setState(() {});
+    }
+
+    // Check if the game is over
+    if (didWin(values)) {
+      print("Game over ${player1turn ? 'player1' : 'player2'} won");
+
+      // Show game over dialog, with the option to restart the game
+      await showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            actions: [
+              // Play again button
+              TextButton(
+                onPressed: () {
+                  // Reset the values
+                  values = List.filled(9, '');
+
+                  // Remove the dialog
+                  Navigator.pop(context);
+
+                  // Refresh screen with no X's or O's
+                  setState(() {});
+                },
+                child: const Text('Play again'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+
+    //
+    else {
+      // Game not over, change player turn
+      player1turn = !player1turn;
     }
   }
 
